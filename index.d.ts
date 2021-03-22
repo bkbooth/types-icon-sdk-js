@@ -6,7 +6,6 @@
 import { BigNumber } from "bignumber.js";
 
 type Key = string | Buffer | ArrayBuffer | Array<any>;
-type BigNumberParseable = string | number | BigNumber;
 
 interface KeyValue {
     [key: string]: any;
@@ -40,12 +39,12 @@ export class IconAmount {
      * it is recommended to create BigNumbers from String values rather than Number values
      * to avoid a potential loss of precision.
      */
-    constructor(value: BigNumberParseable, digit: BigNumberParseable);
+    constructor(value: BigNumber.Value, digit: BigNumber.Value);
 
     /**
      * Creates an instance of IconAmount.
      */
-    static of(value: BigNumberParseable, digit: BigNumberParseable): IconAmount;
+    static of(value: BigNumber.Value, digit: BigNumber.Value): IconAmount;
 
     /**
      * Get digit property.
@@ -65,7 +64,7 @@ export class IconAmount {
     /**
      * Convert the unit of value property into custom digit
      */
-    convertUnit(digit: BigNumberParseable): IconAmount;
+    convertUnit(digit: BigNumber.Value): IconAmount;
 
     /**
      * IconAmount class property which contains unit digit constants
@@ -115,22 +114,22 @@ export namespace IconConverter {
     /**
      * Convert string or BigNumber value to number.
      */
-    function toNumber(value: BigNumberParseable): number;
+    function toNumber(value: BigNumber.Value): number;
 
     /**
      * Convert string or number value to BigNumber.
      */
-    function toBigNumber(value: BigNumberParseable): BigNumber;
+    function toBigNumber(value: BigNumber.Value): BigNumber;
 
     /**
      * Convert string, number or BigNumber value to hex string strictly.
      */
-    function toHexNumber(value: BigNumberParseable): string;
+    function toHexNumber(value: BigNumber.Value): string;
 
     /**
      * Convert string, number or BigNumber value to hex string.
      */
-    function toHex(value: BigNumberParseable): string;
+    function toHex(value: BigNumber.Value): string;
 }
 
 export class IconWallet {
