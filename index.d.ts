@@ -11,6 +11,15 @@ interface KeyValue {
     [key: string]: any;
 }
 
+declare class Call {
+    constructor(to: string, from: string, data: KeyValue);
+}
+
+declare class HttpCall {
+    // TODO
+    execute(): Promise<any>;
+}
+
 export default class IconService {
     /**
      * Creates an instance of IconService.
@@ -70,10 +79,6 @@ export class IconAmount {
      * IconAmount class property which contains unit digit constants
      */
     static Unit: { LOOP: 0; GLOOP: 9; ICX: 18 };
-}
-
-declare class Call {
-    constructor(to: string, from: string, data: KeyValue);
 }
 
 export namespace IconBuilder {
@@ -196,11 +201,6 @@ export namespace IconValidator {
      * Check if input value is a EOA or SCORE address.
      */
     function isAddress(value: any): boolean;
-}
-
-export class HttpCall {
-    // TODO
-    execute(): Promise<any>;
 }
 
 export class HttpProvider {
