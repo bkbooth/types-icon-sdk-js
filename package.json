@@ -1,7 +1,6 @@
 {
-  "name": "types-icon-sdk-js",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "Ben Booth <ben@benbooth.dev> (https://benbooth.dev)",
-  "license": "MIT"
+    "name": "@types/icon-sdk-js",
+    "version": "1.0.0",
+    "author": "Ben Booth <ben@benbooth.dev> (https://benbooth.dev)",
+    "license": "MIT"
 }
