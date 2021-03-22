@@ -1,3 +1,3 @@
 # @types/icon-sdk-js
 
-Types for icon-sdk-js
+TypeScript definitions for icon-sdk-js
