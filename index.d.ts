@@ -3,7 +3,7 @@
 // Definitions by: Ben Booth <https://github.com/bkbooth>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-import { BigNumber } from "bignumber.js";
+import BigNumber from "bignumber.js";
 
 type Key = string | Buffer | ArrayBuffer | Array<any>;
 
@@ -11,13 +11,71 @@ interface KeyValue {
     [key: string]: any;
 }
 
+declare class HttpCall {
+    // TODO
+    execute(): Promise<any>;
+}
+
 declare class Call {
     constructor(to: string, from: string, data: KeyValue);
 }
 
-declare class HttpCall {
-    // TODO
-    execute(): Promise<any>;
+declare class IcxTransaction {
+    constructor(
+        to: string,
+        from: string,
+        value: BigNumber.Value,
+        stepLimit: BigNumber.Value,
+        nid: BigNumber.Value,
+        nonce: BigNumber.Value,
+        version: BigNumber.Value,
+        timestamp: BigNumber.Value,
+    );
+}
+
+declare class CallTransaction extends IcxTransaction {
+    constructor(
+        to: string,
+        from: string,
+        value: BigNumber.Value,
+        stepLimit: BigNumber.Value,
+        nid: BigNumber.Value,
+        nonce: BigNumber.Value,
+        version: BigNumber.Value,
+        timestamp: BigNumber.Value,
+        method: string,
+        params: KeyValue,
+    );
+}
+
+declare class DeployTransaction extends IcxTransaction {
+    constructor(
+        to: string,
+        from: string,
+        value: BigNumber.Value,
+        stepLimit: BigNumber.Value,
+        nid: BigNumber.Value,
+        nonce: BigNumber.Value,
+        version: BigNumber.Value,
+        timestamp: BigNumber.Value,
+        contentType: string,
+        content: string,
+        params: KeyValue,
+    );
+}
+
+declare class MessageTransaction extends IcxTransaction {
+    constructor(
+        to: string,
+        from: string,
+        value: BigNumber.Value,
+        stepLimit: BigNumber.Value,
+        nid: BigNumber.Value,
+        nonce: BigNumber.Value,
+        version: BigNumber.Value,
+        timestamp: BigNumber.Value,
+        data: string,
+    );
 }
 
 export default class IconService {
@@ -30,6 +88,11 @@ export default class IconService {
      * Get the balance of the address.
      */
     getBalance(address: string): HttpCall;
+
+    /**
+     * Send a transaction that changes the states of address.
+     */
+    sendTransaction(signedTransaction: SignedTransaction): HttpCall;
 
     /**
      * Calls a SCORE API just for reading.
@@ -112,6 +175,124 @@ export namespace IconBuilder {
          * Build 'Call' object
          */
         build(): Call;
+    }
+
+    class IcxTransactionBuilder {
+        /**
+         * Creates an instance of IcxTransactionBuilder.
+         */
+        constructor();
+
+        /**
+         * Set 'to' property
+         */
+        to(to: string): this;
+
+        /**
+         * Set 'from' property
+         */
+        from(from: string): this;
+
+        /**
+         * Set 'value' property
+         */
+        value(value: BigNumber.Value): this;
+
+        /**
+         * Set 'stepLimit' property
+         */
+        stepLimit(stepLimit: BigNumber.Value): this;
+
+        /**
+         * Set 'nid' property
+         */
+        nid(nid: BigNumber.Value): this;
+
+        /**
+         * Set 'nonce' property
+         */
+        nonce(nonce: BigNumber.Value): this;
+
+        /**
+         * Set 'version' property
+         */
+        version(version: BigNumber.Value): this;
+
+        /**
+         * Set 'timestamp' property
+         */
+        timestamp(timestamp: BigNumber.Value): this;
+
+        /**
+         * Build 'IcxTransaction' object
+         */
+        build(): IcxTransaction;
+    }
+
+    class CallTransactionBuilder extends IcxTransactionBuilder {
+        /**
+         * Creates an instance of CallTransactionBuilder.
+         */
+        constructor();
+
+        /**
+         * Set 'method' property
+         */
+        method(method: string): this;
+
+        /**
+         * Set 'params' property
+         */
+        params(params: KeyValue): this;
+
+        /**
+         * Build 'CallTransaction' object
+         */
+        build(): CallTransaction;
+    }
+
+    class DeployTransactionBuilder extends IcxTransactionBuilder {
+        /**
+         * Creates an instance of DeployTransactionBuilder.
+         */
+        constructor();
+
+        /**
+         * Set 'contentType' property
+         */
+        contentType(contentType: string): this;
+
+        /**
+         * Set 'content' property
+         */
+        content(content: string): this;
+
+        /**
+         * Set 'params' property
+         */
+        params(params: KeyValue): this;
+
+        /**
+         * Build 'DeployTransaction' object
+         */
+        build(): DeployTransaction;
+    }
+
+    class MessageTransactionBuilder extends IcxTransactionBuilder {
+        /**
+         * Creates an instance of MessageTransactionBuilder.
+         */
+        constructor();
+
+        /**
+         * Set 'data' property
+         */
+        data(data: string): this;
+
+        /**
+         * Build 'MessageTransaction' object
+         */
+        build(): MessageTransaction;
     }
 }
 
@@ -211,4 +392,29 @@ export class HttpProvider {
 
     // TODO
     request(value: KeyValue, converter: any): HttpCall;
+}
+
+export class SignedTransaction {
+    /**
+     * Creates an instance of SignedTransaction.
+     */
+    constructor(
+        transaction: IcxTransaction | CallTransaction | DeployTransaction | MessageTransaction,
+        wallet: IconWallet,
+    );
+
+    /**
+     * Get raw transaction object of this.transaction.
+     */
+    getRawTransaction(): KeyValue;
+
+    /**
+     * Get signature string.
+     */
+    getSignature(): string;
+
+    /**
+     * Get properties of signed transaction object
+     */
+    getProperties(): KeyValue;
 }
