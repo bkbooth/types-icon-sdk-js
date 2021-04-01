@@ -11,9 +11,8 @@ interface KeyValue {
     [key: string]: any;
 }
 
-declare class HttpCall {
-    // TODO
-    execute(): Promise<any>;
+declare class HttpCall<T = any> {
+    execute<U = T>(): Promise<U>;
 }
 
 /**
@@ -179,7 +178,7 @@ export default class IconService {
      *
      * @returns The HttpCall instance for icx_getBalance JSON-RPC API request.
      */
-    getBalance(address: string): HttpCall;
+    getBalance(address: string): HttpCall<BigNumber>;
 
     /**
      * Get the block information.
